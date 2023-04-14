@@ -1,26 +1,36 @@
 cmake_minimum_required(VERSION 3.22.1)
-project(Analyser)
+## TODO Include logger, test platform
+## TODO switch to Release Type
+## TODO enable compile options
+## TODO enable documentation
+## TODO enable DOCKER
+## TODO switch executable location
+project(Analyser CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+
 add_subdirectory(src)
+#add_executable(${PROJECT_NAME} out/build/_deps/PcapPlusPlus/Examples/DNSResolver/main.cpp)
 #Compiler Options env variables/etc.
 
 
 
 #list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/out/build/_deps/pcapplusplus-build")
 #list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/out/build/_deps/pcapplusplus-build")
-list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/out/build/_deps/")
+#list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/out/build/_deps/")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 #set(ENV{PKG_CONFIG_PATH}
 #        ${CMAKE_SOURCE_DIR}/dependencies/lib/pkgconfig/:${CMAKE_SOURCE_DIR}/dependencies/lib64/pkgconfig/)
-find_package(PcapPlusPlus)
-find_package(Threads REQUIRED)
-find_package(PCAP)
-find_package(googletest)
-
-
 SET(Boost_USE_STATIC_LIBS ON)
 find_package(Boost 1.80.0 REQUIRED COMPONENTS log log-setup)
+
+find_package(PCAP)
+find_package(PcapPlusPlus)
+find_package(Threads REQUIRED)
+find_package(googletest)
+#find_package(doxygen)
+
+
+
 #sudo apt-get install pkg-config
 
 link_directories(${Boost_LIBRARY_DIRS})
@@ -28,7 +38,9 @@ link_directories(${Boost_LIBRARY_DIRS})
 set(PROJ_INCLUDE_DIRS
         ${Boost_INCLUDE_DIRS}
         ${PCAP_INCLUDE_DIR}
-        ${PcapPlusPlus_INCLUDE_DIRS})
+        out/build/_deps/pcapplusplus-src/Common++/header
+        out/build/_deps/pcapplusplus-src/Pcap++/header
+        out/build/_deps/pcapplusplus-src/Packet++/header)
 
 set(PROJ_LINK_LIBRARIES
         ${Boost_LIBRARIES}
@@ -37,8 +49,16 @@ set(PROJ_LINK_LIBRARIES
         Boost::log
         ${PCAP_LIBRARY}
         Threads::Threads
-        ${PcapPlusPlus_LIBRARIES})
-
+        Common++
+        Pcap++
+        Packet++
+        )
+#doxygen
+#doxygen::doxygen
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJ_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJ_LINK_LIBRARIES})
+#add_subdirectory(out/build/_deps/pcapplusplus-src)
+#message(${PcapPlusPlus_INCLUDE_DIRS})
+#message(${PcapPlusPlus_LIBS})
+#message(${CMAKE_PROJECT_INCLUDE})
