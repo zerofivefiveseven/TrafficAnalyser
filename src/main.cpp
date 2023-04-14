@@ -1,27 +1,16 @@
-
 #include <stdlib.h>
 #include <queue>
-#include <iomanip>
-#include <algorithm>
 #include <map>
 #include "PcapLiveDeviceList.h"
 #include "PcapFilter.h"
-#include "PcapFileDevice.h"
 #include "TablePrinter.h"
 #include "SystemUtils.h"
 #include "PcapPlusPlusVersion.h"
 #include <getopt.h>
 #include <iostream>
-#include <sstream>
-#include <iostream>
-#include "stdlib.h"
-#include "SystemUtils.h"
 #include "Packet.h"
-#include "EthLayer.h"
-#include "IPv4Layer.h"
 #include "TcpLayer.h"
 #include "HttpLayer.h"
-#include "PcapFileDevice.h"
 
 
 #define EXIT_WITH_ERROR(reason) do { \
@@ -29,13 +18,6 @@
 	std::cout << std::endl << "ERROR: " << reason << std::endl << std::endl; \
 	exit(1); \
 	} while(0)
-
-
-#define PRINT_STAT_LINE(description, counter, measurement) \
-		std::cout \
-			<< std::left << std::setw(40) << (std::string(description) + ":") \
-			<< std::right << std::setw(15) << std::fixed << std::showpoint << std::setprecision(3) << counter \
-			<< " [" << measurement << "]" << std::endl;
 
 
 #define DEFAULT_CALC_RATES_PERIOD_SEC 5
@@ -162,18 +144,6 @@ void listInterfaces()
 }
 
 
-void printStatsHeadline(const std::string &description)
-{
-    std::string underline;
-    for (size_t i = 0; i < description.length(); i++)
-    {
-        underline += "-";
-    }
-
-    std::cout << std::endl << description << std::endl << underline << std::endl << std::endl;
-}
-
-
 /**
  * packet capture callback - called whenever a packet arrives
  */
@@ -240,19 +210,6 @@ void httpPacketArrive(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* 
     }
 
 
-}
-
-
-/**
- * An auxiliary method for sorting the hostname count map. Used only in printHostnames()
- */
-bool hostnameComparer(const std::pair<std::string, int>& first, const std::pair<std::string, int>& second)
-{
-    if (first.second == second.second)
-    {
-        return first.first > second.first;
-    }
-    return first.second > second.second;
 }
 
 
