@@ -7,7 +7,6 @@
 #include "PcapLiveDeviceList.h"
 #include "PcapFilter.h"
 #include "PcapFileDevice.h"
-#include "HttpStatsCollector.h"
 #include "TablePrinter.h"
 #include "SystemUtils.h"
 #include "PcapPlusPlusVersion.h"
