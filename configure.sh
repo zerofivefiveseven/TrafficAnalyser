@@ -1,21 +1,27 @@
-#! /bin/sh
+#!/bin/bash
 set -eu
 
 
-REQUIRED_PKG="libpcap-dev"
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $REQUIRED_PKG|grep "install ok installed")
-echo Checking for $REQUIRED_PKG: $PKG_OK
-if [ "" = "$PKG_OK" ]; then
-  echo "No $REQUIRED_PKG. Setting up $REQUIRED_PKG."
-  sudo apt-get --yes install $REQUIRED_PKG
-fi
-REQUIRED_PKG2="libstdc++6"
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $REQUIRED_PKG2|grep "install ok installed")
-echo Checking for $REQUIRED_PKG: $PKG_OK
-if [ "" = "$PKG_OK" ]; then
-  echo "No $REQUIRED_PKG. Setting up $REQUIRED_PKG."
-  sudo apt-get --yes install $REQUIRED_PKG
-fi
+# shellcheck disable=SC2039
+declare -a NECESSARY=( "build-essential cmake" "libpcap-dev" "libstdc++6" )
+# shellcheck disable=SC2112
+function installOrUpdate() {
+    for value in "$@" # Используйте здесь "$@", а не "$*" !!!!!
+        do
+            PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $value|grep "install ok installed")
+            echo Checking for $value: $PKG_OK
+            if [ "" = "$PKG_OK" ]; then
+              echo "No $value. Setting up $value."
+              sudo apt-get --yes install $value
+            fi
 
+        done
+}
 
-cmake -S . -B out/build
+# shellcheck disable=SC2039
+installOrUpdate "${NECESSARY[@]}"
+
+cmake -S . -B cmake-build-debug
+cd ./cmake-build-debug
+cmake --build .
+sudo chmod a+x ./Analyser

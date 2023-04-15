@@ -45,12 +45,12 @@
 #message( STATUS "Boost static libs: " ${Boost_LIBRARIES} )
 
 include(FetchContent)
-set(FETCHCONTENT_QUIET off)
+Set(FETCHCONTENT_QUIET FALSE)
 message("Fetching https://github.com/seladb/PcapPlusPlus.git")
 FetchContent_Declare(
         PcapPlusPlus
         GIT_REPOSITORY https://github.com/seladb/PcapPlusPlus.git
-        #GIT_TAG origin/master
+        GIT_TAG origin/master
         GIT_PROGRESS TRUE
         OVERRIDE_FIND_PACKAGE
 )

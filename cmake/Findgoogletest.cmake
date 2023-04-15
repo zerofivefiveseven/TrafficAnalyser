@@ -1,5 +1,3 @@
-include(FetchContent)
-
 message("Fetching https://github.com/google/googletest.git")
 FetchContent_Declare(
         googletest
