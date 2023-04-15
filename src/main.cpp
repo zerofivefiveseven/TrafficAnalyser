@@ -12,6 +12,9 @@
 #include "TcpLayer.h"
 #include "HttpLayer.h"
 
+//TODO move class implementation into .hpp/.cpp files
+//TODO move headers includes/remove unused
+//TODO use linter
 
 #define EXIT_WITH_ERROR(reason) do { \
 	printUsage(); \
@@ -31,6 +34,7 @@ static struct option HttpAnalyzerOptions[] =
                 {"help", no_argument, nullptr, 'h'},
                 {nullptr, 0, nullptr, 0}
         };
+
 namespace UserStructs {
     struct StatsHolderTmp;
     struct StatsHolderGlobal {
@@ -57,27 +61,31 @@ namespace UserStructs {
     struct StatsHolderTmp : StatsHolderGlobal {
         friend StatsHolderGlobal;
     private:
-        std::queue<pcpp::HttpRequestLayer> requestQue;
+        std::queue<std::pair<std::string, int>> requestQue;
     public:
-        void UpdateByResponse(const pcpp::HttpResponseLayer* tmpResponce){
-            const pcpp::HttpRequestLayer& tmpRequest = requestQue.front();
-            std::string tmpHostName = tmpRequest.getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue();
-
-            if (HostnamesStats.find(tmpHostName)
+        void UpdateByResponse(int ResponseDownSize){
+            if(requestQue.empty()){
+                return;
+            }
+            auto tmpRequest = requestQue.front();
+            std::string HostName = tmpRequest.first;
+            int RequestUpSize = tmpRequest.second;
+            if (HostnamesStats.find(HostName)
                 == HostnamesStats.end()) {
 
-                HostnamesStats.emplace(tmpHostName, std::make_pair<long, long>(tmpRequest.getLayerPayloadSize(),tmpResponce->getContentLength()));
+                HostnamesStats.emplace(HostName, std::make_pair<long, long>(RequestUpSize, ResponseDownSize));
 //                statHolderTemp->HostnamesStats[tmpRequest.getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue()] =
 //                        std::make_pair<long, long>(tmpRequest.getLayerPayloadSize(),httpResponceLayer->getContentLength());
             } else {
-                HostnamesStats[tmpHostName] =
-                        std::make_pair<long,long>(  HostnamesStats[tmpHostName].first +  tmpRequest.getLayerPayloadSize(),
-                                                    HostnamesStats[tmpHostName].second + tmpResponce->getContentLength());
+                HostnamesStats[HostName] =
+                        std::make_pair<long,long>(HostnamesStats[HostName].first + RequestUpSize,
+                                                  HostnamesStats[HostName].second + ResponseDownSize);
             }
             requestQue.pop();
         }
-        void addRequestToQue(pcpp::HttpRequestLayer tmp){
+        void addRequestToQue(const std::pair<std::string, int>& tmp){
             requestQue.push(tmp);
+            std::cout<<tmp.first<<tmp.second;
         }
     };
 
@@ -85,17 +93,18 @@ namespace UserStructs {
         for(const auto &[host, pair] : tmp.HostnamesStats){
             if (HostnamesStats.find(host)
                 == HostnamesStats.end()) {
-                auto nodeTmp = tmp.HostnamesStats.extract(host);
-                HostnamesStats.insert(std::move(nodeTmp));
+                HostnamesStats.insert(*tmp.HostnamesStats.find(host));
 //                statHolderTemp->HostnamesStats[tmpRequest.getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue()] =
 //                        std::make_pair<long, long>(tmpRequest.getLayerPayloadSize(),httpResponceLayer->getContentLength());
             } else {
                 HostnamesStats[host] =
                         std::make_pair<long,long>(  HostnamesStats[host].first +  tmp.HostnamesStats[host].first,
                                                     HostnamesStats[host].second + tmp.HostnamesStats[host].second);
-                tmp.HostnamesStats.erase(host);
+
             }
+
         }
+        tmp.HostnamesStats.clear();
     }
 }
 
@@ -158,8 +167,10 @@ void httpPacketArrive(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* 
                 std::cerr << "Something went wrong, couldn't find HTTP request layer" << std::endl;
 
             }
-
-            statHolderTemp->addRequestToQue(*httpRequestLayer);
+            statHolderTemp->addRequestToQue(
+                    std::pair<std::string, int>
+                            (httpRequestLayer->getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue(),
+                                                httpRequestLayer->getLayerPayloadSize()));
 
             std::cout << std::endl
                       << "----------------------------------------------"
@@ -203,7 +214,7 @@ void httpPacketArrive(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* 
                       << std::endl
                       << "--------------------------------------------------"
                       << std::endl;
-            statHolderTemp->UpdateByResponse(httpResponceLayer);
+            statHolderTemp->UpdateByResponse(httpResponceLayer->getContentLength());
         }
 
 
@@ -274,7 +285,6 @@ void analyzeHttpFromLiveTraffic(pcpp::PcapLiveDevice* dev, bool printRatesPeriod
 
     // calculate final rates
     StatsInstanceGlobal.MergeFromTmp(StatsInstanceTemp);
-
     // print stats summary
     StatsInstanceGlobal.printStats();
 
