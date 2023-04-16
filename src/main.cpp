@@ -1,13 +1,11 @@
-#include <stdlib.h>
-#include <queue>
-#include <map>
+
+#include "StatsHolder.h"
+#include <getopt.h>
 #include "PcapLiveDeviceList.h"
 #include "PcapFilter.h"
 #include "TablePrinter.h"
 #include "SystemUtils.h"
 #include "PcapPlusPlusVersion.h"
-#include <getopt.h>
-#include <iostream>
 #include "Packet.h"
 #include "TcpLayer.h"
 #include "HttpLayer.h"
@@ -36,82 +34,7 @@ static struct option HttpAnalyzerOptions[] =
                 {nullptr, 0,                               nullptr, 0}
         };
 
-namespace UserStructs {
-    struct StatsHolderTmp;
 
-    struct StatsHolderGlobal {
-    protected:
-        std::map<std::string, std::pair<long, long>> HostnamesStats;
-    public:
-        void printStats() const;
-
-        //non-const extracting from Temp and insert to Glob
-        //that's why we don't need to erase temp
-        void MergeFromTmp(StatsHolderTmp &);
-    };
-
-    void StatsHolderGlobal::printStats() const {
-        std::cout << std::endl
-                  << "\tTraffic Analysis\t";
-        for (const auto &[k, v]: HostnamesStats) {
-            std::cout << std::endl
-                      << "Hostname:\t" << k << "\t"
-                      //From long to double shadow cast
-                      << "Up/Down (bytes)\t:" << v.first << "/" << v.second;
-        }
-        std::cout << std::endl;
-    }
-
-    struct StatsHolderTmp : StatsHolderGlobal {
-        friend StatsHolderGlobal;
-    private:
-        std::queue<std::pair<std::string, int>> requestQue;
-    public:
-        void UpdateByResponse(int ResponseDownSize) {
-            if (requestQue.empty()) {
-                return;
-            }
-            auto tmpRequest = requestQue.front();
-            std::string HostName = tmpRequest.first;
-            int RequestUpSize = tmpRequest.second;
-            if (HostnamesStats.find(HostName)
-                == HostnamesStats.end()) {
-
-                HostnamesStats.emplace(HostName, std::make_pair<long, long>(RequestUpSize, ResponseDownSize));
-//                statHolderTemp->HostnamesStats[tmpRequest.getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue()] =
-//                        std::make_pair<long, long>(tmpRequest.getLayerPayloadSize(),httpResponceLayer->getContentLength());
-            } else {
-                HostnamesStats[HostName] =
-                        std::make_pair<long, long>(HostnamesStats[HostName].first + RequestUpSize,
-                                                   HostnamesStats[HostName].second + ResponseDownSize);
-            }
-            requestQue.pop();
-        }
-
-        void addRequestToQue(const std::pair<std::string, int> &tmp) {
-            requestQue.push(tmp);
-            std::cout << tmp.first << tmp.second;
-        }
-    };
-
-    void StatsHolderGlobal::MergeFromTmp(UserStructs::StatsHolderTmp &tmp) {
-        for (const auto &[host, pair]: tmp.HostnamesStats) {
-            if (HostnamesStats.find(host)
-                == HostnamesStats.end()) {
-                HostnamesStats.insert(*tmp.HostnamesStats.find(host));
-//                statHolderTemp->HostnamesStats[tmpRequest.getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue()] =
-//                        std::make_pair<long, long>(tmpRequest.getLayerPayloadSize(),httpResponceLayer->getContentLength());
-            } else {
-                HostnamesStats[host] =
-                        std::make_pair<long, long>(HostnamesStats[host].first + tmp.HostnamesStats[host].first,
-                                                   HostnamesStats[host].second + tmp.HostnamesStats[host].second);
-
-            }
-
-        }
-        tmp.HostnamesStats.clear();
-    }
-}
 
 
 /**
