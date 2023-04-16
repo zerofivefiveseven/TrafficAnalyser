@@ -1,5 +1,6 @@
 
-#include "StatsHolder.h"
+#include "StatsHolderGlobal.h"
+#include "StatsHolderTmp.h"
 #include <getopt.h>
 #include "PcapLiveDeviceList.h"
 #include "PcapFilter.h"
@@ -10,10 +11,11 @@
 #include "TcpLayer.h"
 #include "HttpLayer.h"
 
-//TODO move class implementation into .hpp/.cpp files
-//TODO move headers includes/remove unused
-//TODO use linter
-
+// TODO use log things use BOOST::LOG
+// TODO count packets and common traffic paired with domen
+// TODO use doxygen
+// TODO use Google Test
+// TODO Use Docker
 #define EXIT_WITH_ERROR(reason) do { \
     printUsage(); \
     std::cout << std::endl << "ERROR: " << reason << std::endl << std::endl; \
@@ -97,30 +99,9 @@ void httpPacketArrive(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *
 
             }
             statHolderTemp->addRequestToQue(
-                    std::pair<std::string, int>
+                    std::make_pair<std::string, unsigned >
                             (httpRequestLayer->getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue(),
                              httpRequestLayer->getLayerPayloadSize()));
-
-            std::cout << std::endl
-                      << "----------------------------------------------"
-                      << std::endl
-                      << "            REQUEST                           "
-                      << std::endl
-                      << "HTTP request URI: " << httpRequestLayer->getFirstLine()->getUri()
-                      << std::endl
-                      << "HTTP payload(in bytes): " << httpRequestLayer->getLayerPayloadSize()
-                      << std::endl
-                      << "HTTP request host: "
-                      << httpRequestLayer->getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue()
-                      << std::endl
-                      << "FULL REQUEST TEXT: " << httpRequestLayer->toString()
-                      << std::endl
-                      << "HTTP data text: " << httpRequestLayer->getData()
-                      << std::endl
-                      << "------------------------------------------------"
-                      << std::endl
-                      << std::endl;
-
 
         } else if (parsedPacket.isPacketOfType(pcpp::HTTPResponse)) {
             auto *httpResponceLayer = parsedPacket.getLayerOfType<pcpp::HttpResponseLayer>();
@@ -129,20 +110,6 @@ void httpPacketArrive(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *
 
             }
 
-
-            std::cout << std::endl
-                      << "----------------------------------------------"
-                      << std::endl
-                      << "            RESPONSE                         "
-                      << std::endl
-                      << "HTTP response content lengh(in bytes?): " << httpResponceLayer->getContentLength()
-                      << std::endl
-                      << "HTTP response text: " << httpResponceLayer->toString()
-                      << std::endl
-                      << "HTTP data text: " << httpResponceLayer->getData()
-                      << std::endl
-                      << "--------------------------------------------------"
-                      << std::endl;
             statHolderTemp->UpdateByResponse(httpResponceLayer->getContentLength());
         }
 
