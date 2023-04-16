@@ -8,15 +8,14 @@
 #include "SystemUtils.h"
 #include "PcapPlusPlusVersion.h"
 #include "Packet.h"
-//#include "TcpLayer.h"
 #include "HttpLayer.h"
 #include "IPv4Layer.h"
 
-// TODO use log things use BOOST::LOG
-// TODO count packets and common traffic paired with domen
+// TODO use log things BOOST::LOG
 // TODO use doxygen
 // TODO use Google Test
 // TODO Use Docker
+// TODO Specify pipeline with test, doxygen targets
 #define EXIT_WITH_ERROR(reason) do { \
     printUsage(); \
     std::cout << std::endl << "ERROR: " << reason << std::endl << std::endl; \
