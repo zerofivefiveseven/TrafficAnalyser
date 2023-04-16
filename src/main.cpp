@@ -1,15 +1,16 @@
 
 #include "StatsHolderGlobal.h"
 #include "StatsHolderTmp.h"
+#include "SystemUtils.h"
 #include <getopt.h>
 #include "PcapLiveDeviceList.h"
 #include "PcapFilter.h"
-#include "TablePrinter.h"
 #include "SystemUtils.h"
 #include "PcapPlusPlusVersion.h"
 #include "Packet.h"
-#include "TcpLayer.h"
+//#include "TcpLayer.h"
 #include "HttpLayer.h"
+#include "IPv4Layer.h"
 
 // TODO use log things use BOOST::LOG
 // TODO count packets and common traffic paired with domen
@@ -35,8 +36,6 @@ static struct option HttpAnalyzerOptions[] =
                 {"help",                no_argument,       nullptr, 'h'},
                 {nullptr, 0,                               nullptr, 0}
         };
-
-
 
 
 /**
@@ -93,24 +92,33 @@ void httpPacketArrive(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *
     if (parsedPacket.isPacketOfType(pcpp::HTTP)) {
 
         if (parsedPacket.isPacketOfType(pcpp::HTTPRequest)) {
-            pcpp::HttpRequestLayer *httpRequestLayer = parsedPacket.getLayerOfType<pcpp::HttpRequestLayer>();
+            auto *httpRequestLayer = parsedPacket.getLayerOfType<pcpp::HttpRequestLayer>();
+            pcpp::IPv4Layer *IPlayer = dynamic_cast<pcpp::IPv4Layer *>(parsedPacket.getLayerOfType(pcpp::IPv4));
             if (httpRequestLayer == nullptr) {
                 std::cerr << "Something went wrong, couldn't find HTTP request layer" << std::endl;
-
             }
-            statHolderTemp->addRequestToQue(
-                    std::make_pair<std::string, unsigned >
-                            (httpRequestLayer->getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue(),
-                             httpRequestLayer->getLayerPayloadSize()));
+            statHolderTemp->Update(UserStructs::StatsHolderTmp::HostNameAssociated{IPlayer->getDstIPv4Address().toString(),
+                                                                                   httpRequestLayer->getFieldByName(
+                                                                                           PCPP_HTTP_HOST_FIELD)->getFieldValue(),
+                                                                                   static_cast<unsigned >(httpRequestLayer->getLayerPayloadSize()),
+                                                                                   0,
+                                                                                   1,
+                                                                                   0});
 
         } else if (parsedPacket.isPacketOfType(pcpp::HTTPResponse)) {
             auto *httpResponceLayer = parsedPacket.getLayerOfType<pcpp::HttpResponseLayer>();
+            pcpp::IPv4Layer *IPlayer = dynamic_cast<pcpp::IPv4Layer *>(parsedPacket.getLayerOfType(pcpp::IPv4));
             if (httpResponceLayer == nullptr) {
                 std::cerr << "Something went wrong, couldn't find HTTP response layer" << std::endl;
 
             }
 
-            statHolderTemp->UpdateByResponse(httpResponceLayer->getContentLength());
+            statHolderTemp->Update(UserStructs::StatsHolderTmp::HostNameAssociated{IPlayer->getSrcIPv4Address().toString(),
+                                                                                   {},
+                                                                                   0,
+                                                                                   static_cast<unsigned >(httpResponceLayer->getContentLength()),
+                                                                                   0,
+                                                                                   1});
         }
 
 
@@ -141,8 +149,8 @@ void analyzeHttpFromLiveTraffic(pcpp::PcapLiveDevice *dev, bool printRatesPeriod
     pcpp::OrFilter allFilters;
     pcpp::PortFilter httpPortFilterFirst(dstPorthttp, pcpp::SRC_OR_DST);
     pcpp::PortFilter httpPortFilterSecond(dstPorthttps, pcpp::SRC_OR_DST);
-    allFilters.addFilter((pcpp::GeneralFilter * ) & httpPortFilterFirst);
-    allFilters.addFilter((pcpp::GeneralFilter * ) & httpPortFilterSecond);
+    allFilters.addFilter((pcpp::GeneralFilter *) &httpPortFilterFirst);
+    allFilters.addFilter((pcpp::GeneralFilter *) &httpPortFilterSecond);
     if (!dev->setFilter(allFilters))
         EXIT_WITH_ERROR("Could not set up filter on device");
 

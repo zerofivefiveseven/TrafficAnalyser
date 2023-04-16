@@ -6,24 +6,16 @@
 #include "StatsHolderGlobal.h"
 
 namespace UserStructs {
-    void StatsHolderTmp::UpdateByResponse(unsigned ResponseDownSize) {
-        if (requestQue.empty()) {
-            return;
-        }
-        auto [HostName, RequestUpSize] = requestQue.front();
-        if (HostnamesStats.find(HostName)
+    void StatsHolderTmp::Update(const HostNameAssociated &tmp) {
+        auto [IpAdrr, HttpHostname, UpSize, DownSize, Upcount, DownCount] = tmp;
+        if (HostnamesStats.find(IpAdrr)
             == HostnamesStats.end()) {
 
-            HostnamesStats.emplace(HostName, HostNameAssociated{HostName, RequestUpSize, ResponseDownSize, 1, 1});
+            HostnamesStats.emplace(IpAdrr, HostNameAssociated{tmp});
 //                statHolderTemp->HostnamesStats[tmpRequest.getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue()] =
 //                        std::make_pair<long, long>(tmpRequest.getLayerPayloadSize(),httpResponceLayer->getContentLength());
         } else {
-            HostnamesStats[HostName] += HostNameAssociated{HostName, RequestUpSize, ResponseDownSize, 1, 1};
+            HostnamesStats[IpAdrr] += HostNameAssociated{tmp};
         }
-        requestQue.pop();
-    }
-
-    void StatsHolderTmp::addRequestToQue(const std::pair<std::string, unsigned> &tmp) {
-        requestQue.push(tmp);
     }
 }

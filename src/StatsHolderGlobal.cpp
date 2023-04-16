@@ -28,10 +28,12 @@ namespace UserStructs {
         std::cout << std::endl
                   << "\tTraffic Analysis\t";
         for (const auto &[Key, Struct]: HostnamesStats) {
-            std::cout << std::endl
-                      << "Hostname:  " << Struct.Hostname << "\t"
-                      //From long to double shadow cast
-                      << "Up/Down (bytes):  " << Struct.Up << "/" << Struct.Down <<"\t"
+            std::cout << std::endl;
+            if (Struct.oHostname.has_value()) {
+                std::cout << "Hostname:  " << Struct.oHostname.value() << "\t";
+                //From long to double shadow cast
+            } else { std::cout << "Problems with hostname identifying\n Ipv4addr:  " << Struct.IpAddr; }
+            std::cout << "Up/Down (bytes):  " << Struct.Up << "/" << Struct.Down << "\t"
                       << "Detected Packets Count (Up/Down):  " << Struct.UpPacketsCount << "/"
                       << Struct.DownPacketsCount << "\t"
                       << "Summarized traffic associated with host:  " << Struct.Up + Struct.Down;
