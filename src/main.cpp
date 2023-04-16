@@ -17,10 +17,10 @@
 //TODO use linter
 
 #define EXIT_WITH_ERROR(reason) do { \
-	printUsage(); \
-	std::cout << std::endl << "ERROR: " << reason << std::endl << std::endl; \
-	exit(1); \
-	} while(0)
+    printUsage(); \
+    std::cout << std::endl << "ERROR: " << reason << std::endl << std::endl; \
+    exit(1); \
+    } while(0)
 
 
 #define DEFAULT_CALC_RATES_PERIOD_SEC 5
@@ -28,34 +28,38 @@
 
 static struct option HttpAnalyzerOptions[] =
         {
-                {"rate-calc-period", required_argument, nullptr, 'r'},
-                {"disable-rates-print", no_argument, nullptr, 'd'},
-                {"list-interfaces", no_argument, nullptr, 'l'},
-                {"help", no_argument, nullptr, 'h'},
-                {nullptr, 0, nullptr, 0}
+                {"interface",           optional_argument, nullptr, 'i'},
+                {"rate-calc-period",    required_argument, nullptr, 'r'},
+                {"disable-rates-print", no_argument,       nullptr, 'd'},
+                {"list-interfaces",     no_argument,       nullptr, 'l'},
+                {"help",                no_argument,       nullptr, 'h'},
+                {nullptr, 0,                               nullptr, 0}
         };
 
 namespace UserStructs {
     struct StatsHolderTmp;
+
     struct StatsHolderGlobal {
     protected:
         std::map<std::string, std::pair<long, long>> HostnamesStats;
     public:
         void printStats() const;
+
         //non-const extracting from Temp and insert to Glob
         //that's why we don't need to erase temp
-        void MergeFromTmp (StatsHolderTmp &);
+        void MergeFromTmp(StatsHolderTmp &);
     };
-    void StatsHolderGlobal::printStats() const{
-        std::cout<< std::endl
-        <<"\tTraffic Analysis\t";
-        for(const auto &[k,v] : HostnamesStats){
-            std::cout<<std::endl
-            <<"Hostname:\t"<<k<<"\t"
-            //From long to double shadow cast
-            <<"Up/Down (Kylobytes)\t:"<<v.first/1000<<"/"<<v.second/1000
-            <<std::endl;
+
+    void StatsHolderGlobal::printStats() const {
+        std::cout << std::endl
+                  << "\tTraffic Analysis\t";
+        for (const auto &[k, v]: HostnamesStats) {
+            std::cout << std::endl
+                      << "Hostname:\t" << k << "\t"
+                      //From long to double shadow cast
+                      << "Up/Down (bytes)\t:" << v.first << "/" << v.second;
         }
+        std::cout << std::endl;
     }
 
     struct StatsHolderTmp : StatsHolderGlobal {
@@ -63,8 +67,8 @@ namespace UserStructs {
     private:
         std::queue<std::pair<std::string, int>> requestQue;
     public:
-        void UpdateByResponse(int ResponseDownSize){
-            if(requestQue.empty()){
+        void UpdateByResponse(int ResponseDownSize) {
+            if (requestQue.empty()) {
                 return;
             }
             auto tmpRequest = requestQue.front();
@@ -78,19 +82,20 @@ namespace UserStructs {
 //                        std::make_pair<long, long>(tmpRequest.getLayerPayloadSize(),httpResponceLayer->getContentLength());
             } else {
                 HostnamesStats[HostName] =
-                        std::make_pair<long,long>(HostnamesStats[HostName].first + RequestUpSize,
-                                                  HostnamesStats[HostName].second + ResponseDownSize);
+                        std::make_pair<long, long>(HostnamesStats[HostName].first + RequestUpSize,
+                                                   HostnamesStats[HostName].second + ResponseDownSize);
             }
             requestQue.pop();
         }
-        void addRequestToQue(const std::pair<std::string, int>& tmp){
+
+        void addRequestToQue(const std::pair<std::string, int> &tmp) {
             requestQue.push(tmp);
-            std::cout<<tmp.first<<tmp.second;
+            std::cout << tmp.first << tmp.second;
         }
     };
 
     void StatsHolderGlobal::MergeFromTmp(UserStructs::StatsHolderTmp &tmp) {
-        for(const auto &[host, pair] : tmp.HostnamesStats){
+        for (const auto &[host, pair]: tmp.HostnamesStats) {
             if (HostnamesStats.find(host)
                 == HostnamesStats.end()) {
                 HostnamesStats.insert(*tmp.HostnamesStats.find(host));
@@ -98,8 +103,8 @@ namespace UserStructs {
 //                        std::make_pair<long, long>(tmpRequest.getLayerPayloadSize(),httpResponceLayer->getContentLength());
             } else {
                 HostnamesStats[host] =
-                        std::make_pair<long,long>(  HostnamesStats[host].first +  tmp.HostnamesStats[host].first,
-                                                    HostnamesStats[host].second + tmp.HostnamesStats[host].second);
+                        std::make_pair<long, long>(HostnamesStats[host].first + tmp.HostnamesStats[host].first,
+                                                   HostnamesStats[host].second + tmp.HostnamesStats[host].second);
 
             }
 
@@ -112,8 +117,7 @@ namespace UserStructs {
 /**
  * Print application usage
  */
-void printUsage()
-{
+void printUsage() {
     std::cout << std::endl
               << "Usage: Live traffic 80/443 port:" << std::endl
               << "-------------------------" << std::endl
@@ -121,7 +125,10 @@ void printUsage()
               << std::endl
               << "Options:" << std::endl
               << std::endl
-              << "    -r calc_period : The period in seconds to calculate rates. If not provided default is 5 seconds" << std::endl
+              << "    -i interface   : Use the specified interface. Can be interface name (e.g eth0) or interface IPv4 address. For details use -l flag."
+              << std::endl
+              << "    -r calc_period : The period in seconds to calculate rates. If not provided default is 5 seconds"
+              << std::endl
               << "    -d             : Disable periodic rates calculation" << std::endl
               << "    -h             : Displays this help message and exits" << std::endl
               << "    -l             : Print the list of interfaces and which is used and exists" << std::endl
@@ -132,22 +139,21 @@ void printUsage()
 /**
  * Go over all interfaces and output their names
  */
-void listInterfaces()
-{
-    const std::vector<pcpp::PcapLiveDevice*>& devList = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList();
+void listInterfaces() {
+    const std::vector<pcpp::PcapLiveDevice *> &devList = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList();
 
     std::cout
-    << std::endl
-    << "Network interfaces:"
-    << std::endl
-    <<"This Name / IP which you use now: "
-    << devList.at(0)->getName()
-    <<" / "
-    <<devList.at(0)->getIPv4Address()
-    <<std::endl;
-    for (auto iter : devList)
-    {
-        std::cout << "    -> Name: '" << iter->getName() << "'   IP address: " << iter->getIPv4Address().toString() << std::endl;
+            << std::endl
+            << "Network interfaces:"
+            << std::endl
+            << "This Name / IP used by default if -l flag not provided: "
+            << devList.at(0)->getName()
+            << " / "
+            << devList.at(0)->getIPv4Address()
+            << std::endl;
+    for (auto iter: devList) {
+        std::cout << "    -> Name: '" << iter->getName() << "'   IP address: " << iter->getIPv4Address().toString()
+                  << std::endl;
     }
     exit(0);
 }
@@ -156,7 +162,7 @@ void listInterfaces()
 /**
  * packet capture callback - called whenever a packet arrives
  */
-void httpPacketArrive(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* cookie) {
+void httpPacketArrive(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *cookie) {
     pcpp::Packet parsedPacket(packet);
     auto *statHolderTemp = (UserStructs::StatsHolderTmp *) cookie;
     if (parsedPacket.isPacketOfType(pcpp::HTTP)) {
@@ -170,7 +176,7 @@ void httpPacketArrive(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* 
             statHolderTemp->addRequestToQue(
                     std::pair<std::string, int>
                             (httpRequestLayer->getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue(),
-                                                httpRequestLayer->getLayerPayloadSize()));
+                             httpRequestLayer->getLayerPayloadSize()));
 
             std::cout << std::endl
                       << "----------------------------------------------"
@@ -227,21 +233,17 @@ void httpPacketArrive(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* 
 /**
  * The callback to be called when application is terminated by ctrl-c. Stops the endless while loop
  */
-void onApplicationInterrupted(void* cookie)
-{
-    bool* shouldStop = (bool*)cookie;
+void onApplicationInterrupted(void *cookie) {
+    bool *shouldStop = (bool *) cookie;
     *shouldStop = true;
 }
-
-
 
 
 /**
  * activate HTTP analysis from live traffic
  */
-void analyzeHttpFromLiveTraffic(pcpp::PcapLiveDevice* dev, bool printRatesPeriodically, int printRatePeriod,
-                                uint16_t dstPorthttp, uint16_t dstPorthttps)
-{
+void analyzeHttpFromLiveTraffic(pcpp::PcapLiveDevice *dev, bool printRatesPeriodically, int printRatePeriod,
+                                uint16_t dstPorthttp, uint16_t dstPorthttps) {
     // open the device
     if (!dev->open())
         EXIT_WITH_ERROR("Could not open the device");
@@ -249,8 +251,8 @@ void analyzeHttpFromLiveTraffic(pcpp::PcapLiveDevice* dev, bool printRatesPeriod
     pcpp::OrFilter allFilters;
     pcpp::PortFilter httpPortFilterFirst(dstPorthttp, pcpp::SRC_OR_DST);
     pcpp::PortFilter httpPortFilterSecond(dstPorthttps, pcpp::SRC_OR_DST);
-    allFilters.addFilter((pcpp::GeneralFilter*) &httpPortFilterFirst);
-    allFilters.addFilter((pcpp::GeneralFilter*) &httpPortFilterSecond);
+    allFilters.addFilter((pcpp::GeneralFilter * ) & httpPortFilterFirst);
+    allFilters.addFilter((pcpp::GeneralFilter * ) & httpPortFilterSecond);
     if (!dev->setFilter(allFilters))
         EXIT_WITH_ERROR("Could not set up filter on device");
 
@@ -266,13 +268,11 @@ void analyzeHttpFromLiveTraffic(pcpp::PcapLiveDevice* dev, bool printRatesPeriod
     bool shouldStop = false;
     pcpp::ApplicationEventHandler::getInstance().onApplicationInterrupted(onApplicationInterrupted, &shouldStop);
 
-    while(!shouldStop)
-    {
+    while (!shouldStop) {
         pcpp::multiPlatformSleep(printRatePeriod);
 
         // calculate rates
-        if (printRatesPeriodically)
-        {
+        if (printRatesPeriodically) {
             StatsInstanceTemp.printStats();
             StatsInstanceGlobal.MergeFromTmp(StatsInstanceTemp);
 
@@ -293,8 +293,7 @@ void analyzeHttpFromLiveTraffic(pcpp::PcapLiveDevice* dev, bool printRatesPeriod
 /**
  * main method of this utility
  */
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
     pcpp::AppName::init(argc, argv);
 
     std::string interfaceNameOrIP = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().at(0)->getName();
@@ -307,11 +306,12 @@ int main(int argc, char* argv[])
     int optionIndex = 0;
     int opt = 0;
 
-    while((opt = getopt_long(argc, argv, "r:dhl", HttpAnalyzerOptions, &optionIndex)) != -1)
-    {
-        switch (opt)
-        {
+    while ((opt = getopt_long(argc, argv, "r:dhl", HttpAnalyzerOptions, &optionIndex)) != -1) {
+        switch (opt) {
             case 0:
+                break;
+            case 'i':
+                interfaceNameOrIP = optarg;
                 break;
             case 'r':
                 printRatePeriod = atoi(optarg);
@@ -330,11 +330,14 @@ int main(int argc, char* argv[])
                 exit(-1);
         }
     }
+    if (interfaceNameOrIP == "") {
+        EXIT_WITH_ERROR("No interface were provided");
+    }
+    pcpp::PcapLiveDevice *dev = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIpOrName(
+            interfaceNameOrIP);
+    if (dev == nullptr)
+        EXIT_WITH_ERROR("Couldn't find interface by provided IP address or name");
 
-        pcpp::PcapLiveDevice* dev = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIpOrName(interfaceNameOrIP);
-        if (dev == nullptr)
-            EXIT_WITH_ERROR("Couldn't find interface by provided IP address or name");
-
-        // start capturing and analyzing traffic
-        analyzeHttpFromLiveTraffic(dev, printRatesPeriodically, printRatePeriod,porthttp, porthttps);
+// start capturing and analyzing traffic
+    analyzeHttpFromLiveTraffic(dev, printRatesPeriodically, printRatePeriod, porthttp, porthttps);
 }

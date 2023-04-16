@@ -24,4 +24,5 @@ installOrUpdate "${NECESSARY[@]}"
 cmake -S . -B cmake-build-debug
 cd ./cmake-build-debug
 cmake --build .
-sudo chmod a+x ./Analyser
+cd ../
+sudo chmod a+x Analyser
