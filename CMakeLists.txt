@@ -9,6 +9,7 @@ project(Analyser CXX)
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory(src)
+
 #add_executable(${PROJECT_NAME} out/build/_deps/PcapPlusPlus/Examples/DNSResolver/main.cpp)
 #Compiler Options env variables/etc.
 
@@ -25,7 +26,7 @@ find_package(Boost 1.80.0 REQUIRED COMPONENTS log log-setup)
 
 #find_package(doxygen)
 
-link_directories(${Boost_LIBRARY_DIRS})
+
 
 set(PROJ_INCLUDE_DIRS
         ${Boost_INCLUDE_DIRS}
@@ -44,9 +45,11 @@ set(PROJ_LINK_LIBRARIES
         Common++
         Pcap++
         Packet++
+        ${Boost_LIBRARY_DIRS}
         )
 #doxygen
 #doxygen::doxygen
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJ_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJ_LINK_LIBRARIES})
+include(test/CMakeLists.txt)
