@@ -21,14 +21,14 @@
 > Can be interface name (e.g eth0) or interface IPv4 address
 
 > -r [seconds]  
-  Timer for temporary Analysis output, default is 5 seconds
+  Timer for Analysis output, default is 5 seconds
 
 > -l  
  Print list of interfaces, default is first in `ifconfig`  
- but you can provide your before start
+ but you can provide yours
 
 > -d  
-> App will not print temporary output  
+> App will not print output periodically 
 
 >  -h  
 > Print help message  
