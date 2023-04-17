@@ -9,11 +9,14 @@
 #include <iostream>
 #include <map>
 #include <optional>
+#include <boost/log/core.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/log/expressions.hpp>
 
 namespace UserStructs {
     struct StatsHolderTmp;
 
-    struct StatsHolderGlobal {
+    struct StatsHolderResult {
 
     public:
         struct HostNameAssociated {
@@ -23,14 +26,18 @@ namespace UserStructs {
             unsigned Down;
             unsigned UpPacketsCount;
             unsigned DownPacketsCount;
-            HostNameAssociated& operator+=(const HostNameAssociated& rhs){
-                if(!this->oHostname.has_value()){
+
+            HostNameAssociated &operator+=(const HostNameAssociated &rhs) {
+                if (!this->oHostname.has_value()) {
+                    BOOST_LOG_TRIVIAL(debug)
+                        << "Hostname was not provided in thus node but added by request packet via+= opertaor: "
+                        << rhs.oHostname.value();
                     this->oHostname = rhs.oHostname.value();
                 }
-                this->Up+=rhs.Up;
-                this->Down+=rhs.Down;
-                this->UpPacketsCount+=rhs.UpPacketsCount;
-                this->DownPacketsCount+=rhs.DownPacketsCount;
+                this->Up += rhs.Up;
+                this->Down += rhs.Down;
+                this->UpPacketsCount += rhs.UpPacketsCount;
+                this->DownPacketsCount += rhs.DownPacketsCount;
                 return *this;
             }
         };
@@ -38,8 +45,6 @@ namespace UserStructs {
 
         void printStats() const;
 
-        //non-const extracting from Temp and insert to Glob
-        //that's why we don't need to erase temp
         void MergeFromTmp(StatsHolderTmp &x);
 
     protected:

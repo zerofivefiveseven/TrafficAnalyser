@@ -2,36 +2,36 @@
 // Created by paul on 16.04.23.
 //
 
-#include "StatsHolderGlobal.h"
+#include "StatsHolderResult.h"
 #include "StatsHolderTmp.h"
 
 namespace UserStructs {
 
 
-    void StatsHolderGlobal::MergeFromTmp(UserStructs::StatsHolderTmp &tmp) {
-        for (const auto &[host, pair]: tmp.HostnamesStats) {
+    void StatsHolderResult::MergeFromTmp(UserStructs::StatsHolderTmp &tmp) {
+        for (const auto &[host, unused]: tmp.HostnamesStats)
             if (HostnamesStats.find(host)
                 == HostnamesStats.end()) {
                 HostnamesStats.insert(*tmp.HostnamesStats.find(host));
-//                statHolderTemp->HostnamesStats[tmpRequest.getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue()] =
-//                        std::make_pair<long, long>(tmpRequest.getLayerPayloadSize(),httpResponceLayer->getContentLength());
+                BOOST_LOG_TRIVIAL(debug) << "Hostname don't found in result statholder thus add new node in map";
+
             } else {
                 HostnamesStats[host] += tmp.HostnamesStats[host];
+                BOOST_LOG_TRIVIAL(debug) << "Hostname found, update stats in result statholder";
 
             }
 
-        }
+
         tmp.HostnamesStats.clear();
     }
 
-    void StatsHolderGlobal::printStats() const {
+    void StatsHolderResult::printStats() const {
         std::cout << std::endl
                   << "\tTraffic Analysis\t";
         for (const auto &[Key, Struct]: HostnamesStats) {
             std::cout << std::endl;
             if (Struct.oHostname.has_value()) {
                 std::cout << "Hostname:  " << Struct.oHostname.value() << "\t";
-                //From long to double shadow cast
             } else { std::cout << "Problems with hostname identifying\n Ipv4addr:  " << Struct.IpAddr; }
             std::cout << "Up/Down (bytes):  " << Struct.Up << "/" << Struct.Down << "\t"
                       << "Detected Packets Count (Up/Down):  " << Struct.UpPacketsCount << "/"

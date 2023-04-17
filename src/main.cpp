@@ -1,26 +1,24 @@
 
-#include "StatsHolderGlobal.h"
+#include "StatsHolderResult.h"
 #include "StatsHolderTmp.h"
 #include "SystemUtils.h"
 #include <getopt.h>
 #include "PcapLiveDeviceList.h"
 #include "PcapFilter.h"
-#include "SystemUtils.h"
-#include "PcapPlusPlusVersion.h"
 #include "Packet.h"
 #include "HttpLayer.h"
 #include "IPv4Layer.h"
-
+//#include <gtest/gtest.h>
 // TODO use log things BOOST::LOG
-// TODO use doxygen
 // TODO use Google Test
 // TODO Use Docker
-// TODO Specify pipeline with test, doxygen targets
-#define EXIT_WITH_ERROR(reason) do { \
-    printUsage(); \
-    std::cout << std::endl << "ERROR: " << reason << std::endl << std::endl; \
-    exit(1); \
-    } while(0)
+// TODO Specify pipeline with test, doxygen targets by Compound
+
+void init_logging() {
+    boost::log::core::get()->set_filter(
+            boost::log::trivial::severity >= boost::log::trivial::info
+    );
+}
 
 
 #define DEFAULT_CALC_RATES_PERIOD_SEC 5
@@ -37,9 +35,6 @@ static struct option HttpAnalyzerOptions[] =
         };
 
 
-/**
- * Print application usage
- */
 void printUsage() {
     std::cout << std::endl
               << "Usage: Live traffic 80/443 port:" << std::endl
@@ -86,38 +81,45 @@ void listInterfaces() {
  * packet capture callback - called whenever a packet arrives
  */
 void httpPacketArrive(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *cookie) {
+    BOOST_LOG_TRIVIAL(trace) << "Packet Arrives and Callback Called";
+
     pcpp::Packet parsedPacket(packet);
     auto *statHolderTemp = (UserStructs::StatsHolderTmp *) cookie;
-    if (parsedPacket.isPacketOfType(pcpp::HTTP)) {
 
+    if (parsedPacket.isPacketOfType(pcpp::HTTP)) {
+        BOOST_LOG_TRIVIAL(trace) << "Packet recognized as HTTP";
         if (parsedPacket.isPacketOfType(pcpp::HTTPRequest)) {
+            BOOST_LOG_TRIVIAL(trace) << "Packet recognized as HTTP Request";
+
             auto *httpRequestLayer = parsedPacket.getLayerOfType<pcpp::HttpRequestLayer>();
-            pcpp::IPv4Layer *IPlayer = dynamic_cast<pcpp::IPv4Layer *>(parsedPacket.getLayerOfType(pcpp::IPv4));
-            if (httpRequestLayer == nullptr) {
-                std::cerr << "Something went wrong, couldn't find HTTP request layer" << std::endl;
-            }
-            statHolderTemp->Update(UserStructs::StatsHolderTmp::HostNameAssociated{IPlayer->getDstIPv4Address().toString(),
-                                                                                   httpRequestLayer->getFieldByName(
-                                                                                           PCPP_HTTP_HOST_FIELD)->getFieldValue(),
-                                                                                   static_cast<unsigned >(httpRequestLayer->getLayerPayloadSize()),
-                                                                                   0,
-                                                                                   1,
-                                                                                   0});
+            pcpp::IPv4Layer *IPlayerInstance = dynamic_cast<pcpp::IPv4Layer *>(parsedPacket.getLayerOfType(pcpp::IPv4));
+
+            BOOST_LOG_TRIVIAL(trace) << "Trying to add packet to Holder";
+            statHolderTemp->Update(
+                    UserStructs::StatsHolderTmp::HostNameAssociated{IPlayerInstance->getDstIPv4Address().toString(),
+                                                                    httpRequestLayer->getFieldByName(
+                                                                            PCPP_HTTP_HOST_FIELD)->getFieldValue(),
+                                                                    static_cast<unsigned >(httpRequestLayer->getLayerPayloadSize()),
+                                                                    0,
+                                                                    1,
+                                                                    0});
+
 
         } else if (parsedPacket.isPacketOfType(pcpp::HTTPResponse)) {
+            BOOST_LOG_TRIVIAL(trace) << "Packet recognized as HTTP Responce";
+
             auto *httpResponceLayer = parsedPacket.getLayerOfType<pcpp::HttpResponseLayer>();
-            pcpp::IPv4Layer *IPlayer = dynamic_cast<pcpp::IPv4Layer *>(parsedPacket.getLayerOfType(pcpp::IPv4));
-            if (httpResponceLayer == nullptr) {
-                std::cerr << "Something went wrong, couldn't find HTTP response layer" << std::endl;
+            pcpp::IPv4Layer *IPlayerInstance = dynamic_cast<pcpp::IPv4Layer *>(parsedPacket.getLayerOfType(pcpp::IPv4));
 
-            }
+            BOOST_LOG_TRIVIAL(trace) << "Trying to add packet to Holder";
 
-            statHolderTemp->Update(UserStructs::StatsHolderTmp::HostNameAssociated{IPlayer->getSrcIPv4Address().toString(),
-                                                                                   {},
-                                                                                   0,
-                                                                                   static_cast<unsigned >(httpResponceLayer->getContentLength()),
-                                                                                   0,
-                                                                                   1});
+            statHolderTemp->Update(
+                    UserStructs::StatsHolderTmp::HostNameAssociated{IPlayerInstance->getSrcIPv4Address().toString(),
+                                                                    {},
+                                                                    0,
+                                                                    static_cast<unsigned >(httpResponceLayer->getContentLength()),
+                                                                    0,
+                                                                    1});
         }
 
 
@@ -132,6 +134,7 @@ void httpPacketArrive(pcpp::RawPacket *packet, pcpp::PcapLiveDevice *dev, void *
  */
 void onApplicationInterrupted(void *cookie) {
     bool *shouldStop = (bool *) cookie;
+    BOOST_LOG_TRIVIAL(debug) << "app interrupted by SIGINT";
     *shouldStop = true;
 }
 
@@ -143,7 +146,7 @@ void analyzeHttpFromLiveTraffic(pcpp::PcapLiveDevice *dev, bool printRatesPeriod
                                 uint16_t dstPorthttp, uint16_t dstPorthttps) {
     // open the device
     if (!dev->open())
-        EXIT_WITH_ERROR("Could not open the device");
+        BOOST_LOG_TRIVIAL(fatal) << "Could not open the device";
 
     pcpp::OrFilter allFilters;
     pcpp::PortFilter httpPortFilterFirst(dstPorthttp, pcpp::SRC_OR_DST);
@@ -151,12 +154,12 @@ void analyzeHttpFromLiveTraffic(pcpp::PcapLiveDevice *dev, bool printRatesPeriod
     allFilters.addFilter((pcpp::GeneralFilter *) &httpPortFilterFirst);
     allFilters.addFilter((pcpp::GeneralFilter *) &httpPortFilterSecond);
     if (!dev->setFilter(allFilters))
-        EXIT_WITH_ERROR("Could not set up filter on device");
+        BOOST_LOG_TRIVIAL(fatal) << "Could not open the device";
 
 
     UserStructs::StatsHolderTmp StatsInstanceTemp;
 
-    UserStructs::StatsHolderGlobal StatsInstanceGlobal;
+    UserStructs::StatsHolderResult StatsInstanceGlobal;
     // start capturing packets and collecting stats
     dev->startCapture(httpPacketArrive, &StatsInstanceTemp);
 
@@ -191,8 +194,8 @@ void analyzeHttpFromLiveTraffic(pcpp::PcapLiveDevice *dev, bool printRatesPeriod
  * main method of this utility
  */
 int main(int argc, char *argv[]) {
+    init_logging();
     pcpp::AppName::init(argc, argv);
-
     std::string interfaceNameOrIP = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList().at(0)->getName();
     uint16_t porthttp = 80;
     uint16_t porthttps = 443;
@@ -209,17 +212,22 @@ int main(int argc, char *argv[]) {
                 break;
             case 'i':
                 interfaceNameOrIP = optarg;
+                BOOST_LOG_TRIVIAL(debug) << "Interface added and now is: " <<interfaceNameOrIP;
                 break;
             case 'r':
                 printRatePeriod = atoi(optarg);
+                BOOST_LOG_TRIVIAL(debug) << "Rate Period is " <<printRatePeriod;
                 break;
             case 'd':
                 printRatesPeriodically = false;
+                BOOST_LOG_TRIVIAL(debug) << "Now don't print stats periodically";
                 break;
             case 'h':
+                BOOST_LOG_TRIVIAL(trace) << "Printing Usage";
                 printUsage();
                 exit(0);
             case 'l':
+                BOOST_LOG_TRIVIAL(trace) << "Print Interfaces List";
                 listInterfaces();
                 break;
             default:
@@ -228,12 +236,12 @@ int main(int argc, char *argv[]) {
         }
     }
     if (interfaceNameOrIP == "") {
-        EXIT_WITH_ERROR("No interface were provided");
+        BOOST_LOG_TRIVIAL(fatal) << "No interface were provided";
     }
     pcpp::PcapLiveDevice *dev = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDeviceByIpOrName(
             interfaceNameOrIP);
     if (dev == nullptr)
-        EXIT_WITH_ERROR("Couldn't find interface by provided IP address or name");
+        BOOST_LOG_TRIVIAL(fatal) << "Couldn't find interface by provided IP address or name";
 
 // start capturing and analyzing traffic
     analyzeHttpFromLiveTraffic(dev, printRatesPeriodically, printRatePeriod, porthttp, porthttps);

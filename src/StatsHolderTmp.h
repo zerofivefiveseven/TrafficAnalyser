@@ -5,11 +5,11 @@
 #ifndef ANALYSER_STATSHOLDERTMP_H
 #define ANALYSER_STATSHOLDERTMP_H
 
-#include "StatsHolderGlobal.h"
+#include "StatsHolderResult.h"
 
 namespace UserStructs {
-    struct StatsHolderTmp : StatsHolderGlobal {
-        friend StatsHolderGlobal;
+    struct StatsHolderTmp : StatsHolderResult {
+        friend StatsHolderResult;
     public:
         void Update(const HostNameAssociated &);
 

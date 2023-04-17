@@ -3,7 +3,7 @@
 //
 
 #include "StatsHolderTmp.h"
-#include "StatsHolderGlobal.h"
+#include "StatsHolderResult.h"
 
 namespace UserStructs {
     void StatsHolderTmp::Update(const HostNameAssociated &tmp) {
@@ -12,10 +12,12 @@ namespace UserStructs {
             == HostnamesStats.end()) {
 
             HostnamesStats.emplace(IpAdrr, HostNameAssociated{tmp});
-//                statHolderTemp->HostnamesStats[tmpRequest.getFieldByName(PCPP_HTTP_HOST_FIELD)->getFieldValue()] =
-//                        std::make_pair<long, long>(tmpRequest.getLayerPayloadSize(),httpResponceLayer->getContentLength());
+            BOOST_LOG_TRIVIAL(debug) << "Hostname don't found in temporary statholder thus add new node in map";
+
         } else {
             HostnamesStats[IpAdrr] += HostNameAssociated{tmp};
+            BOOST_LOG_TRIVIAL(debug) << "Hostname found, update stats in temporary statholder";
+
         }
     }
 }
