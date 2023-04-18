@@ -22,4 +22,4 @@ cmake -S . -B cmake-build-debug
 cd ./cmake-build-debug
 cmake --build .
 cd ../
-sudo chmod a+x Analyser
+sudo chmod a+x Exec
