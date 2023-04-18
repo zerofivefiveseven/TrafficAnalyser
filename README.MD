@@ -7,7 +7,7 @@ This technique implemented both by myself and PcapPlusPlus lib.
 ### Install guide
 - `sudo chmod +x ./configure.sh` 
 - `sudo ./configure.sh` 
-- `sudo ./Analyser` (*that command will start the app*)
+- `sudo ./Analyser` (*this command will start the app*)
 #### OR
 - Install dependencies 
 - - build-essential cmake
