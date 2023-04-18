@@ -17,7 +17,7 @@ This technique implemented both by myself and PcapPlusPlus lib.
 - Edit Configuration > Enable Run with root privileges 
 
 ### Options: 
-`./Analyser [-i interface] [-r calc_period]  [-hld]`
+`./Exec [-i interface] [-r calc_period]  [-hld]`
 
 > -i [interface]  
 >  Use the specified interface.   
