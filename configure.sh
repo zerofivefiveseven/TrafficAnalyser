@@ -18,8 +18,8 @@ function installOrUpdate() {
 sudo apt update
 installOrUpdate "${NECESSARY[@]}"
 
-cmake -S . -B cmake-build-debug
-cd ./cmake-build-debug
+cmake -S . -B cmake-build-release
+cd ./cmake-build-release
 cmake --build .
 cd ../
 sudo chmod a+x Analyser

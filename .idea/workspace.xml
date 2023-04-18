@@ -3,9 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakePresetLoader"><![CDATA[{
-  "useNewFormat": true
-}]]></component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
   <component name="CMakeReloadState">
     <option name="reloaded" value="true" />
   </component>
@@ -14,6 +14,7 @@
       <config projectName="Analyser" targetName="boost_chrono" />
       <config projectName="Analyser" targetName="boost_filesystem" />
       <config projectName="Analyser" targetName="testExec" />
+      <config projectName="Analyser" targetName="Exec_lib" />
       <config projectName="Analyser" targetName="Packet++" />
       <config projectName="Analyser" targetName="gmock_main" />
       <config projectName="Analyser" targetName="boost_context" />
@@ -28,13 +29,13 @@
       <config projectName="Analyser" targetName="Pcap++" />
       <config projectName="Analyser" targetName="memplumber" />
       <config projectName="Analyser" targetName="Common++" />
-      <config projectName="Analyser" targetName="Analyser" />
       <config projectName="Analyser" targetName="boost_log_setup" />
       <config projectName="Analyser" targetName="gtest" />
       <config projectName="Analyser" targetName="boost_log" />
       <config projectName="Analyser" targetName="gmock" />
       <config projectName="Analyser" targetName="boost_atomic" />
       <config projectName="Analyser" targetName="boost_container" />
+      <config projectName="Analyser" targetName="Exec" />
       <config projectName="Analyser" targetName="boost_coroutine" />
       <config projectName="Analyser" targetName="hash-library" />
     </generated>
@@ -46,9 +47,9 @@
     <list default="true" id="ef8b1af9-dc70-4e01-bb6b-cf8c423ef2d2" name="Changes" comment="FastConfigFiles">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configure.sh" beforeDir="false" afterPath="$PROJECT_DIR$/configure.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/test/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_all.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_all.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,24 +79,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "ctest.advertisement.all.test.configuration.is.created": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;ctest.advertisement.all.test.configuration.is.created&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Compound.CompoundAnalyzerPlusTest">
+}</component>
+  <component name="RunManager" selected="CMake Application.Analyser">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -108,6 +109,16 @@
       </method>
     </configuration>
     <configuration name="Common++" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Analyser" TARGET_NAME="Common++" CONFIG_NAME="Release">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Exec" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Analyser" TARGET_NAME="Exec" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="Analyser" RUN_TARGET_NAME="Exec">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Exec_lib" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Analyser" TARGET_NAME="Exec_lib" CONFIG_NAME="Release">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -267,6 +278,8 @@
       <item itemvalue="CMake Application.Common++" />
       <item itemvalue="CMake Application.Packet++" />
       <item itemvalue="CMake Application.Pcap++" />
+      <item itemvalue="CMake Application.Exec" />
+      <item itemvalue="CMake Application.Exec_lib" />
       <item itemvalue="CMake Application.Analyser" />
       <item itemvalue="Compound.CompoundAnalyzerPlusTest" />
       <item itemvalue="CTest Application.All CTest" />
@@ -283,7 +296,7 @@
       <option name="presentableId" value="Default" />
       <updated>1681780864672</updated>
       <workItem from="1681780866527" duration="23000" />
-      <workItem from="1681780943714" duration="3036000" />
+      <workItem from="1681780943714" duration="5603000" />
     </task>
     <task id="LOCAL-00001" summary="FastConfigFiles">
       <created>1681782540987</created>
@@ -306,7 +319,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681782609308</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="FastConfigFiles">
+      <created>1681784352275</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1681784352275</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

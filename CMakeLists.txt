@@ -9,7 +9,7 @@ project(Analyser CXX)
 enable_testing()
 ##set(${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-add_subdirectory(src)
+
 
 #add_executable(${PROJECT_NAME} out/build/_deps/PcapPlusPlus/Examples/DNSResolver/main.cpp)
 #Compiler Options env variables/etc.
@@ -53,3 +53,4 @@ set(PROJ_LINK_LIBRARIES
 
 #include(test/CMakeLists.txt)
 add_subdirectory(test)
+add_subdirectory(src)
