@@ -1,5 +1,9 @@
 # Description
+This app aimed to http/s traffic analysis related to hostnames and network interfaces such as wlo0.
 
+App can not recognize host from HTTPS/-secured and then get information automatically from previous layers such as ip layer or tcp layer This technique implemented both by myself and PcapPlusPlus lib.
+
+Unstable version contains ./run ./idea for one tab config creation
 
 ### Install guide
 - `sudo chmod +x ./configure.sh` 
