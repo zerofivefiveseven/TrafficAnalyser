@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
-#include "StatHolder.h"
+#include "../src/StatsHolderTmp.h"
+#include "../src/StatsHolderResult.h"
 // Demonstrate some basic assertions.
 TEST(test, BasicAssertions) {
     // Expect two strings not to be equal.

@@ -13,7 +13,6 @@
     <generated>
       <config projectName="Analyser" targetName="boost_chrono" />
       <config projectName="Analyser" targetName="boost_filesystem" />
-      <config projectName="Analyser" targetName="testExec" />
       <config projectName="Analyser" targetName="Exec_lib" />
       <config projectName="Analyser" targetName="Packet++" />
       <config projectName="Analyser" targetName="gmock_main" />
@@ -22,6 +21,7 @@
       <config projectName="Analyser" targetName="boost_random" />
       <config projectName="Analyser" targetName="boost_date_time" />
       <config projectName="Analyser" targetName="gtest_main" />
+      <config projectName="Analyser" targetName="testProj" />
       <config projectName="Analyser" targetName="boost_wserialization" />
       <config projectName="Analyser" targetName="light_pcapng" />
       <config projectName="Analyser" targetName="boost_serialization" />
@@ -44,12 +44,13 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef8b1af9-dc70-4e01-bb6b-cf8c423ef2d2" name="Changes" comment="FastConfigFiles">
+    <list default="true" id="ef8b1af9-dc70-4e01-bb6b-cf8c423ef2d2" name="Changes" comment="Test Unstable">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.run/Analyser.run.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configure.sh" beforeDir="false" afterPath="$PROJECT_DIR$/configure.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/test/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_all.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_all.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +62,11 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MacroExpansionManager">
@@ -96,10 +102,22 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="CMake Application.Analyser">
+  <component name="RunManager" selected="Google Test.All in testProj">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in testProj" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Analyser" TARGET_NAME="testProj" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="Analyser" RUN_TARGET_NAME="testProj" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Analyser" TARGET_NAME="testProj" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="Analyser" RUN_TARGET_NAME="testProj" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="testExec" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" REDIRECT_INPUT="false" ELEVATE="true" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Analyser" TARGET_NAME="testExec" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="Analyser" RUN_TARGET_NAME="testExec" TEST_MODE="SUITE_TEST">
@@ -280,11 +298,10 @@
       <item itemvalue="CMake Application.Pcap++" />
       <item itemvalue="CMake Application.Exec" />
       <item itemvalue="CMake Application.Exec_lib" />
-      <item itemvalue="CMake Application.Analyser" />
       <item itemvalue="Compound.CompoundAnalyzerPlusTest" />
       <item itemvalue="CTest Application.All CTest" />
       <item itemvalue="Docker.Unnamed" />
-      <item itemvalue="Google Test.testExec" />
+      <item itemvalue="Google Test.All in testProj" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -296,7 +313,7 @@
       <option name="presentableId" value="Default" />
       <updated>1681780864672</updated>
       <workItem from="1681780866527" duration="23000" />
-      <workItem from="1681780943714" duration="5603000" />
+      <workItem from="1681780943714" duration="7990000" />
     </task>
     <task id="LOCAL-00001" summary="FastConfigFiles">
       <created>1681782540987</created>
@@ -326,7 +343,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681784352275</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Test Unstable">
+      <created>1681787226316</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1681787226316</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -351,6 +375,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="FastConfigFiles" />
-    <option name="LAST_COMMIT_MESSAGE" value="FastConfigFiles" />
+    <MESSAGE value="Test Unstable" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test Unstable" />
   </component>
 </project>
