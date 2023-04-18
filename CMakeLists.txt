@@ -6,7 +6,8 @@ cmake_minimum_required(VERSION 3.22.1)
 ## TODO enable DOCKER
 ## TODO switch executable location
 project(Analyser CXX)
-
+enable_testing()
+##set(${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory(src)
 
@@ -52,4 +53,5 @@ set(PROJ_LINK_LIBRARIES
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJ_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJ_LINK_LIBRARIES})
-include(test/CMakeLists.txt)
+#include(test/CMakeLists.txt)
+add_subdirectory(test)
