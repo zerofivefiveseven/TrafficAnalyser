@@ -1,7 +1,7 @@
 //
 // Created by paul on 16.04.23.
 //
-
+//Стоило наверное делать абстрактный класс
 #include "StatsHolderResult.h"
 #include "StatsHolderTmp.h"
 

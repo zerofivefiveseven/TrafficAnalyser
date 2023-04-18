@@ -44,12 +44,9 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef8b1af9-dc70-4e01-bb6b-cf8c423ef2d2" name="Changes" comment="Test Unstable">
+    <list default="true" id="ef8b1af9-dc70-4e01-bb6b-cf8c423ef2d2" name="Changes" comment="Test Work Fine But no Tests Proveided">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.run/Analyser.run.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/test/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StatsHolderResult.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/StatsHolderResult.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/test_all.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_all.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -102,7 +99,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Google Test.All in testProj">
+  <component name="RunManager" selected="CMake Application.Exec">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -131,7 +128,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Exec" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Analyser" TARGET_NAME="Exec" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="Analyser" RUN_TARGET_NAME="Exec">
+    <configuration name="Exec" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="true" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Analyser" TARGET_NAME="Exec" CONFIG_NAME="Release" RUN_TARGET_PROJECT_NAME="Analyser" RUN_TARGET_NAME="Exec">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -313,7 +310,7 @@
       <option name="presentableId" value="Default" />
       <updated>1681780864672</updated>
       <workItem from="1681780866527" duration="23000" />
-      <workItem from="1681780943714" duration="7990000" />
+      <workItem from="1681780943714" duration="10187000" />
     </task>
     <task id="LOCAL-00001" summary="FastConfigFiles">
       <created>1681782540987</created>
@@ -350,7 +347,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681787226316</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Test Work Fine But no Tests Proveided">
+      <created>1681789199373</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1681789199373</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -376,6 +380,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="FastConfigFiles" />
     <MESSAGE value="Test Unstable" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test Unstable" />
+    <MESSAGE value="Test Work Fine But no Tests Proveided" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test Work Fine But no Tests Proveided" />
   </component>
 </project>
