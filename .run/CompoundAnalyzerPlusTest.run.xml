@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CompoundAnalyzerPlusTest" type="CompoundRunConfigurationType">
+    <toRun name="Analyser" targetId="CMakeBuildProfile:Release" type="CMakeRunConfiguration" />
+    <toRun name="testExec" targetId="CMakeBuildProfile:Release" type="CMakeGoogleTestRunConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
