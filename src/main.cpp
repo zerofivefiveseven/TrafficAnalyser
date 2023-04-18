@@ -8,7 +8,6 @@
 #include "Packet.h"
 #include "HttpLayer.h"
 #include "IPv4Layer.h"
-//#include <gtest/gtest.h>
 // TODO use log things BOOST::LOG
 // TODO use Google Test
 // TODO Use Docker

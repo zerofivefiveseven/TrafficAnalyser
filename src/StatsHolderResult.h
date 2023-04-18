@@ -12,11 +12,12 @@
 #include <boost/log/core.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/log/expressions.hpp>
-
+#include <gtest/gtest.h>
 namespace UserStructs {
     struct StatsHolderTmp;
 
-    struct StatsHolderResult {
+    struct StatsHolderResult {             /* :public ::testing::Test  public ::testing::Test error: cannot declare variable ‘StatsInstanceTemp’ to be of abstract type ‘UserStructs::StatsHolderTmp’
+  159 |     UserStructs::StatsHolderTmp StatsInstanceTemp;*/
 
     public:
         struct HostNameAssociated {

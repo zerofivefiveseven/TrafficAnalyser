@@ -14,8 +14,8 @@ This technique implemented both by myself and PcapPlusPlus lib.
 - - libpcap-dev
 - - libstdc++6
 - set main CMakeLists.txt in Clion
-- Edit Configuration > Enable Run with root privileges 
-
+- Edit Configuration > Enable Run with root privileges   
+But you unable option to send `SIGINT`(2) over Clion 
 ### Options: 
 `./Analyser [-i interface] [-r calc_period]  [-hld]`
 
