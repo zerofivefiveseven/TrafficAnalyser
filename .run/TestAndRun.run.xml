@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="TestAndRun" type="CompoundRunConfigurationType">
-    <toRun name="Analyser" targetId="CMakeBuildProfile:Debug" type="CMakeRunConfiguration" />
-    <toRun name="test" targetId="CMakeBuildProfile:Debug" type="CMakeGoogleTestRunConfigurationType" />
-    <method v="2" />
-  </configuration>
-</component>
