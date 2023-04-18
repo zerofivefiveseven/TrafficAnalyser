@@ -51,7 +51,5 @@ set(PROJ_LINK_LIBRARIES
 #doxygen
 #doxygen::doxygen
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJ_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJ_LINK_LIBRARIES})
 #include(test/CMakeLists.txt)
 add_subdirectory(test)

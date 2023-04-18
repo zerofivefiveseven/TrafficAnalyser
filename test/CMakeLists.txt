@@ -1,12 +1,6 @@
 cmake_minimum_required(VERSION 3.22.1)
 project(testProj)
-add_executable(testExec
-        ../src/main.cpp
-        ../src/StatsHolderResult.cpp
-        ../src/StatsHolderResult.h
-        ../src/StatsHolderTmp.cpp
-        ../src/StatsHolderTmp.h
-        test_all.cpp)
+add_executable(testExec test_all.cpp)
 
 
 #add_custom_target(tests
@@ -15,6 +9,6 @@ add_executable(testExec
 #WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 #)
 
-target_include_directories(testExec PUBLIC ${PROJ_INCLUDE_DIRS})
-target_link_libraries(testExec PUBLIC ${PROJ_LINK_LIBRARIES} GTest::gtest_main)
+target_include_directories(testExec PUBLIC ${PROJ_INCLUDE_DIRS} Exec_lib)
+target_link_libraries(testExec PUBLIC ${PROJ_LINK_LIBRARIES} GTest::gtest_main Exec_lib)
 add_test(all_gtest testExec)

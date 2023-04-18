@@ -43,7 +43,13 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef8b1af9-dc70-4e01-bb6b-cf8c423ef2d2" name="Changes" comment="" />
+    <list default="true" id="ef8b1af9-dc70-4e01-bb6b-cf8c423ef2d2" name="Changes" comment="FastConfigFiles">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/test/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_all.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_all.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -89,7 +95,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Google Test.testExec">
+  <component name="RunManager" selected="Compound.CompoundAnalyzerPlusTest">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -277,8 +283,30 @@
       <option name="presentableId" value="Default" />
       <updated>1681780864672</updated>
       <workItem from="1681780866527" duration="23000" />
-      <workItem from="1681780943714" duration="1365000" />
+      <workItem from="1681780943714" duration="3036000" />
     </task>
+    <task id="LOCAL-00001" summary="FastConfigFiles">
+      <created>1681782540987</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1681782540987</updated>
+    </task>
+    <task id="LOCAL-00002" summary="FastConfigFiles">
+      <created>1681782597017</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1681782597017</updated>
+    </task>
+    <task id="LOCAL-00003" summary="FastConfigFiles">
+      <created>1681782609308</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1681782609308</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -300,5 +328,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="FastConfigFiles" />
+    <option name="LAST_COMMIT_MESSAGE" value="FastConfigFiles" />
   </component>
 </project>
